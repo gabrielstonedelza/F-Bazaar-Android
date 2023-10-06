@@ -36,7 +36,7 @@ class LoginController extends GetxController {
             customersEmails.add(i['email']);
           }
         }
-        print(customersEmails);
+
         update();
       } else {
         if (kDebugMode) {

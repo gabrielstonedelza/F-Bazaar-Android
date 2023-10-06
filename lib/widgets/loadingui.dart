@@ -13,7 +13,7 @@ class LoadingUi extends StatelessWidget {
           child: SizedBox(
             height: 100,
             width: 100,
-            child: Lottie.asset("assets/images/animation_lnen718t.json"),
+            child: Image.asset("assets/images/animation_lnex6hyp_small.gif"),
           ),
         ),
       ],
