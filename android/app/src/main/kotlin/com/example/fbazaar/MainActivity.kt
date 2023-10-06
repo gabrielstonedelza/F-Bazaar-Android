@@ -1,4 +1,4 @@
-package com.example.fbazaar
+package com.store.fbazaar
 
 import io.flutter.embedding.android.FlutterActivity
 
