@@ -71,6 +71,7 @@ class _LoginViewState extends State<LoginView> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TextFormField(
+                  cursorColor: defaultTextColor2,
                   controller: _emailController,
                   focusNode: _emailFocusNode,
                   decoration: InputDecoration(
@@ -100,6 +101,7 @@ class _LoginViewState extends State<LoginView> {
                 TextFormField(
                   controller: _passwordController,
                   focusNode: _passwordFocusNode,
+                  cursorColor: defaultTextColor2,
                   decoration: InputDecoration(
                       suffixIcon: IconButton(
                         onPressed: () {

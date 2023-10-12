@@ -8,7 +8,14 @@ const buttonColor = Color(0xFF982C5E);
 const defaultBlack = Colors.black;
 const defaultTextColor1 = Color(0xFFFEFEFF);
 const defaultTextColor2 = Colors.black;
-const backgroundColor = Color(0xFF222220);
 const greyBack = Color(0xFF545453);
 const muted = Colors.grey;
 const warning = Colors.red;
+
+// colors
+const newDefault = Color(0xFFda9a2f);
+const newPrimary = Color(0xFFf8999e);
+const newSecondary = Color(0xFF449544);
+const newButton = Color(0xFF4eb154);
+const newSnack = Color(0xFFaccbab);
+const newShadow = Color(0xFF503c55);

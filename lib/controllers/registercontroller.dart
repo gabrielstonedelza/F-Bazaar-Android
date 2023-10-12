@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
@@ -8,6 +11,56 @@ import '../statics/appcolors.dart';
 
 class RegistrationController extends GetxController {
   bool isPosting = false;
+  late List allUsers = [];
+
+  late List allEmails = [];
+  late List allUsernames = [];
+  late List allPhoneNumbers = [];
+  bool isLoading = false;
+
+  @override
+  void onInit() {
+    super.onInit();
+    getAllUsers();
+  }
+
+  Future<void> getAllUsers() async {
+    try {
+      isLoading = true;
+      const profileLink = "https://f-bazaar.com/users/users/";
+      var link = Uri.parse(profileLink);
+      http.Response response = await http.get(link, headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      });
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+        allUsers = jsonData;
+        for (var i in allUsers) {
+          if (!allEmails.contains(i['email'])) {
+            allEmails.add(i['email']);
+          }
+          if (!allUsernames.contains(i['username'])) {
+            allUsernames.add(i['username']);
+          }
+          if (!allPhoneNumbers.contains(i['phone'])) {
+            allPhoneNumbers.add(i['phone']);
+          }
+        }
+
+        update();
+      } else {
+        if (kDebugMode) {
+          print(response.body);
+        }
+      }
+    } catch (e) {
+      // Get.snackbar("Sorry","something happened or please check your internet connection",snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
+
   registerUser(String uname, String email, String phoneNumber, String uPassword,
       String uRePassword) async {
     const loginUrl = "https://f-bazaar.com/auth/users/";

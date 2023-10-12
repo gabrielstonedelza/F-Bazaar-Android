@@ -54,6 +54,9 @@ class _RegistrationState extends State<Registration> {
   Timer? timer;
   bool isCompleted = false;
   bool isResent = false;
+  bool emailError = false;
+  bool usernameError = false;
+  bool phoneNumberError = false;
 
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -294,7 +297,16 @@ class _RegistrationState extends State<Registration> {
                       controller: _phoneNumberController,
                       focusNode: _phoneNumberFocusNode,
                       onChanged: (value) {
-                        if (value.length == 10) {
+                        if (value.length == 10 &&
+                            controller.allPhoneNumbers.contains(value)) {
+                          Get.snackbar("Sorry",
+                              "a user with this phone number already exists.",
+                              colorText: Colors.white,
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.red,
+                              duration: const Duration(seconds: 5));
+                        } else if (value.length == 10 &&
+                            !controller.allPhoneNumbers.contains(value)) {
                           String num = _phoneNumberController.text
                               .trim()
                               .replaceFirst("0", '+233');
@@ -436,19 +448,30 @@ class _RegistrationState extends State<Registration> {
                               onPressed: () {
                                 _startPosting();
                                 if (_formKey.currentState!.validate()) {
-                                  controller.registerUser(
-                                      _usernameController.text.trim(),
-                                      _emailController.text.trim(),
-                                      _phoneNumberController.text.trim(),
-                                      _passwordController.text.trim(),
-                                      _rePasswordController.text.trim());
-                                } else {
-                                  Get.snackbar("Error",
-                                      "Something went wrong,check form",
-                                      colorText: defaultTextColor1,
-                                      snackPosition: SnackPosition.BOTTOM,
-                                      backgroundColor: Colors.red);
-                                  return;
+                                  if (controller.allUsernames
+                                      .contains(_usernameController.text)) {
+                                    Get.snackbar("Username Error",
+                                        "A user with the same username already exists",
+                                        colorText: defaultTextColor1,
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        backgroundColor: Colors.red);
+                                    return;
+                                  } else if (controller.allEmails
+                                      .contains(_emailController.text)) {
+                                    Get.snackbar("Email Error",
+                                        "A user with the same email already exists",
+                                        colorText: defaultTextColor1,
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        backgroundColor: Colors.red);
+                                    return;
+                                  } else {
+                                    controller.registerUser(
+                                        _usernameController.text.trim(),
+                                        _emailController.text.trim(),
+                                        _phoneNumberController.text.trim(),
+                                        _passwordController.text.trim(),
+                                        _rePasswordController.text.trim());
+                                  }
                                 }
                               },
                               shape: RoundedRectangleBorder(

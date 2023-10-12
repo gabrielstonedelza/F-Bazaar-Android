@@ -51,7 +51,7 @@ class LoginController extends GetxController {
     }
   }
 
-  loginUser(String email, String password) async {
+  Future<void> loginUser(String email, String password) async {
     const loginUrl = "https://f-bazaar.com/auth/token/login/";
     final myLink = Uri.parse(loginUrl);
     http.Response response = await client.post(myLink,
