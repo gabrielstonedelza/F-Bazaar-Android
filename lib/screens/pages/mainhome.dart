@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../../controllers/cartcontroller.dart';
-import '../../controllers/favoritescontroller.dart';
 import '../../controllers/localnotification_controller.dart';
 import '../../controllers/notificationcontroller.dart';
 import '../../controllers/ordercontroller.dart';
@@ -36,7 +35,6 @@ class _MainHomeState extends State<MainHome> {
   final ProfileController profileController = Get.find();
   final CartController cartController = Get.find();
   final NotificationController notificationController = Get.find();
-  final FavoritesController favController = Get.find();
   final OrderController orderController = Get.find();
   final storage = GetStorage();
   late String uToken = "";
@@ -53,19 +51,21 @@ class _MainHomeState extends State<MainHome> {
   }
 
   void scheduleTimers() {
-    storeItemController.getAllStoreItems(uToken);
+    storeItemController.getAllExclusiveItems(uToken);
+    storeItemController.getAllPromotionalItems(uToken);
+    storeItemController.getAllOtherStoreItems(uToken);
     profileController.getMyProfile(uToken);
     cartController.getAllMyCartItems(uToken);
-    favController.getAllMyFavorites(uToken);
     orderController.getAllOrders(uToken);
     notificationController.getAllTriggeredNotifications(uToken);
     notificationController.getAllUnReadNotifications(uToken);
     notificationController.getAllNotifications(uToken);
     Timer.periodic(const Duration(seconds: 3), (Timer timer) {
-      storeItemController.getAllStoreItems(uToken);
+      storeItemController.getAllExclusiveItems(uToken);
+      storeItemController.getAllPromotionalItems(uToken);
+      storeItemController.getAllOtherStoreItems(uToken);
       profileController.getMyProfile(uToken);
       cartController.getAllMyCartItems(uToken);
-      favController.getAllMyFavorites(uToken);
       orderController.getAllOrders(uToken);
       notificationController.getAllTriggeredNotifications(uToken);
       notificationController.getAllUnReadNotifications(uToken);

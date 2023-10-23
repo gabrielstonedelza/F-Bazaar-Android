@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:fbazaar/controllers/favoritescontroller.dart';
+
 import 'package:get/get.dart';
 import 'package:fbazaar/widgets/loadingui.dart';
 import 'package:flutter/foundation.dart';
@@ -30,7 +30,6 @@ class _DetailPageState extends State<DetailPage> {
   final storage = GetStorage();
   late String uToken = "";
   final StoreItemsController storeItemsController = Get.find();
-  final FavoritesController favController = Get.find();
 
   late List customersRemarks = [];
   late List customersRatings = [];

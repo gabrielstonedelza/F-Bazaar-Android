@@ -16,6 +16,6 @@ const warning = Colors.red;
 const newDefault = Color(0xFFda9a2f);
 const newPrimary = Color(0xFFf8999e);
 const newSecondary = Color(0xFF449544);
-const newButton = Color(0xFF4eb154);
+const newButton = Color(0xFFE8564E);
 const newSnack = Color(0xFFaccbab);
 const newShadow = Color(0xFF503c55);

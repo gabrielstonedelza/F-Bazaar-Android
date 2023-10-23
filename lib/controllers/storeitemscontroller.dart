@@ -28,11 +28,11 @@ class StoreItemsController extends GetxController {
   late String itemPic = "";
   late String description = "";
 
-  Future<void> getAllStoreItems(String token) async {
+  Future<void> getAllExclusiveItems(String token) async {
     try {
       isLoading = true;
 
-      const profileLink = "https://f-bazaar.com/store_api/items/";
+      const profileLink = "https://f-bazaar.com/store_api/exclusive_items/";
       var link = Uri.parse(profileLink);
       http.Response response = await http.get(link, headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -40,34 +40,63 @@ class StoreItemsController extends GetxController {
       });
       if (response.statusCode == 200) {
         var jsonData = jsonDecode(response.body);
-        storeItems.assignAll(jsonData);
-        for (var i in storeItems) {
-          if (i['exclusive']) {
-            if (!exclusiveItems.contains(i)) {
-              exclusiveItems.add(i);
-            }
-          }
-          if (i['promotion']) {
-            if (!promotionItems.contains(i)) {
-              promotionItems.add(i);
-            }
-          }
-          if (!i['promotion'] && !i['exclusive']) {
-            if (!otherItems.contains(i)) {
-              otherItems.add(i);
-            }
-          }
-          if (i['category'] == "Water") {
-            if (!allWater.contains(i)) {
-              allWater.add(i);
-            }
-          }
-          if (i['category'] == "Drinks") {
-            if (!allDrinks.contains(i)) {
-              allDrinks.add(i);
-            }
-          }
+        exclusiveItems.assignAll(jsonData);
+
+        update();
+      } else {
+        if (kDebugMode) {
+          print(response.body);
         }
+      }
+    } catch (e) {
+      // Get.snackbar("Sorry","something happened or please check your internet connection",snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
+
+  Future<void> getAllPromotionalItems(String token) async {
+    try {
+      isLoading = true;
+
+      const profileLink = "https://f-bazaar.com/store_api/promotion_items/";
+      var link = Uri.parse(profileLink);
+      http.Response response = await http.get(link, headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": "Token $token"
+      });
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+        promotionItems.assignAll(jsonData);
+        update();
+      } else {
+        if (kDebugMode) {
+          print(response.body);
+        }
+      }
+    } catch (e) {
+      // Get.snackbar("Sorry","something happened or please check your internet connection",snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
+
+  Future<void> getAllOtherStoreItems(String token) async {
+    try {
+      isLoading = true;
+
+      const profileLink = "https://f-bazaar.com/store_api/other_items/";
+      var link = Uri.parse(profileLink);
+      http.Response response = await http.get(link, headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": "Token $token"
+      });
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+        otherItems.assignAll(jsonData);
+
         update();
       } else {
         if (kDebugMode) {

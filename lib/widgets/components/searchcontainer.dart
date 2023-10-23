@@ -1,4 +1,3 @@
-import 'package:fbazaar/screens/pages/favorites.dart';
 import 'package:flutter/material.dart';
 
 import '../../screens/pages/explore.dart';

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 
 import '../../controllers/cartcontroller.dart';
 import '../../screens/pages/detailnew.dart';
-import '../../screens/pages/itemdetail.dart';
 import '../../statics/appcolors.dart';
 import '../loadingui.dart';
 

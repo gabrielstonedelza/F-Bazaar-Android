@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'controllers/cartcontroller.dart';
-import 'controllers/favoritescontroller.dart';
+
 import 'controllers/localnotification_controller.dart';
 import 'controllers/logincontroller.dart';
 import 'controllers/notificationcontroller.dart';
@@ -26,7 +26,6 @@ void main() async {
   Get.put(StoreItemsController());
   Get.put(CartController());
   Get.put(ProfileController());
-  Get.put(FavoritesController());
   Get.put(MapController());
   Get.put(OrderController());
   Get.put(NotificationController());

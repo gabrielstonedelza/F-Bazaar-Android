@@ -73,7 +73,6 @@ class LoginController extends GetxController {
             backgroundColor: warning,
             colorText: defaultTextColor1);
         storage.remove("token");
-        storage.remove("username");
       }
     } else {
       Get.snackbar("Sorry 😢", "invalid details",

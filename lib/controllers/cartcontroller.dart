@@ -37,7 +37,7 @@ class CartController extends GetxController {
       update();
     } else {
       if (kDebugMode) {
-        print(response.body);
+        print("Printing this from cart controller ${response.body}");
       }
     }
   }

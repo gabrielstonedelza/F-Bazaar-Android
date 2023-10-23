@@ -1,13 +1,12 @@
 import 'package:fbazaar/controllers/cartcontroller.dart';
 import 'package:fbazaar/controllers/storeitemscontroller.dart';
 import 'package:fbazaar/statics/appcolors.dart';
-import 'package:fbazaar/widgets/loadingui.dart';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../screens/pages/detailnew.dart';
-import '../../screens/pages/itemdetail.dart';
 
 class Exclusives extends StatefulWidget {
   final token;

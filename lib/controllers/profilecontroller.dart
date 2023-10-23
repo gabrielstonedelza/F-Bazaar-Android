@@ -23,7 +23,7 @@ class ProfileController extends GetxController {
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
       userId = jsonData['user'].toString();
-      fullName = jsonData['full_name'];
+      fullName = jsonData['get_users_fullname'];
       email = jsonData['get_email'];
       username = jsonData['get_username'];
       profilePicture = jsonData['get_profile_pic'];
