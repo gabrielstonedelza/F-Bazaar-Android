@@ -16,7 +16,7 @@ class OrderController extends GetxController {
   late List processingOrders = [];
   late List pickedUpOrders = [];
 
-  Future<void> getAllOrders(String token) async {
+  Future<void> getAllMyOrders(String token) async {
     const profileLink = "https://f-bazaar.com/order/my_orders/";
     var link = Uri.parse(profileLink);
     http.Response response = await http.get(link, headers: {
@@ -27,25 +27,82 @@ class OrderController extends GetxController {
       var jsonData = jsonDecode(response.body);
       allMyOrders.assignAll(jsonData);
       // print(response.body);
-      for (var i in allMyOrders) {
-        if (i['order_status'] == "Pending") {
-          if (!pendingOrders.contains(i)) {
-            pendingOrders.add(i);
-          }
-        } else if (i['order_status'] == "Processing") {
-          if (!processingOrders.contains(i)) {
-            processingOrders.add(i);
-          }
-        } else if (i['order_status'] == "Picked Up") {
-          if (!pickedUpOrders.contains(i)) {
-            pickedUpOrders.add(i);
-          }
-        } else if (i['order_status'] == "Delivered") {
-          if (!deliveredOrders.contains(i)) {
-            deliveredOrders.add(i);
-          }
-        }
+      update();
+    } else {
+      if (kDebugMode) {
+        print(response.body);
       }
+    }
+  }
+
+  Future<void> getAllPendingOrders(String token) async {
+    const profileLink = "https://f-bazaar.com/order/get_all_my_pending_orders/";
+    var link = Uri.parse(profileLink);
+    http.Response response = await http.get(link, headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Authorization": "Token $token"
+    });
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+      pendingOrders.assignAll(jsonData);
+      update();
+    } else {
+      if (kDebugMode) {
+        print(response.body);
+      }
+    }
+  }
+
+  Future<void> getAllProcessingOrders(String token) async {
+    const profileLink =
+        "https://f-bazaar.com/order/get_all_my_processing_orders/";
+    var link = Uri.parse(profileLink);
+    http.Response response = await http.get(link, headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Authorization": "Token $token"
+    });
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+      processingOrders.assignAll(jsonData);
+      update();
+    } else {
+      if (kDebugMode) {
+        print(response.body);
+      }
+    }
+  }
+
+  Future<void> getAllPickedUpOrders(String token) async {
+    const profileLink =
+        "https://f-bazaar.com/order/get_all_my_picked_up_orders/";
+    var link = Uri.parse(profileLink);
+    http.Response response = await http.get(link, headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Authorization": "Token $token"
+    });
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+      pickedUpOrders.assignAll(jsonData);
+
+      update();
+    } else {
+      if (kDebugMode) {
+        print(response.body);
+      }
+    }
+  }
+
+  Future<void> getAllDeliveredOrders(String token) async {
+    const profileLink =
+        "https://f-bazaar.com/order/get_all_my_delivered_orders/";
+    var link = Uri.parse(profileLink);
+    http.Response response = await http.get(link, headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Authorization": "Token $token"
+    });
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+      deliveredOrders.assignAll(jsonData);
       update();
     } else {
       if (kDebugMode) {

@@ -28,6 +28,62 @@ class StoreItemsController extends GetxController {
   late String itemPic = "";
   late String description = "";
 
+  Future<void> getAllDrinks(String token) async {
+    try {
+      isLoading = true;
+
+      const profileLink = "https://f-bazaar.com/store_api/get_drinks/";
+      var link = Uri.parse(profileLink);
+      http.Response response = await http.get(link, headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": "Token $token"
+      });
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+        allDrinks.assignAll(jsonData);
+
+        update();
+      } else {
+        if (kDebugMode) {
+          print(response.body);
+        }
+      }
+    } catch (e) {
+      // Get.snackbar("Sorry","something happened or please check your internet connection",snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
+
+  Future<void> getAllWater(String token) async {
+    try {
+      isLoading = true;
+
+      const profileLink = "https://f-bazaar.com/store_api/get_water/";
+      var link = Uri.parse(profileLink);
+      http.Response response = await http.get(link, headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": "Token $token"
+      });
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+        allWater.assignAll(jsonData);
+
+        update();
+      } else {
+        if (kDebugMode) {
+          print(response.body);
+        }
+      }
+    } catch (e) {
+      // Get.snackbar("Sorry","something happened or please check your internet connection",snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
+
   Future<void> getAllExclusiveItems(String token) async {
     try {
       isLoading = true;

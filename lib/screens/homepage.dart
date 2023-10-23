@@ -4,6 +4,7 @@ import 'package:fbazaar/screens/pages/explore.dart';
 import 'package:fbazaar/screens/pages/mainhome.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:fbazaar/screens/pages/orders.dart';
+import 'package:fbazaar/screens/pages/orders/ordercomponent.dart';
 import 'package:fbazaar/screens/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -23,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   static const List<Widget> _widgetOptions = <Widget>[
     MainHome(),
     Explore(),
-    Orders(),
+    OrderComponent(),
     MyCart(),
     Profile()
   ];
