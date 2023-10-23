@@ -14,6 +14,8 @@ class StoreItemsController extends GetxController {
   late List exclusiveItems = [];
   late List promotionItems = [];
   late List otherItems = [];
+  late List allDrinks = [];
+  late List allWater = [];
 
   late List customersRemarks = [];
   late List customersRatings = [];
@@ -38,8 +40,7 @@ class StoreItemsController extends GetxController {
       });
       if (response.statusCode == 200) {
         var jsonData = jsonDecode(response.body);
-        storeItems = jsonData;
-
+        storeItems.assignAll(jsonData);
         for (var i in storeItems) {
           if (i['exclusive']) {
             if (!exclusiveItems.contains(i)) {
@@ -54,6 +55,16 @@ class StoreItemsController extends GetxController {
           if (!i['promotion'] && !i['exclusive']) {
             if (!otherItems.contains(i)) {
               otherItems.add(i);
+            }
+          }
+          if (i['category'] == "Water") {
+            if (!allWater.contains(i)) {
+              allWater.add(i);
+            }
+          }
+          if (i['category'] == "Drinks") {
+            if (!allDrinks.contains(i)) {
+              allDrinks.add(i);
             }
           }
         }

@@ -11,6 +11,7 @@ class ProfileController extends GetxController {
   late String username = "";
   late String profilePicture = "";
   late String phoneNumber = "";
+  late String userId = "";
 
   Future<void> getMyProfile(String token) async {
     const profileLink = "https://f-bazaar.com/profile/profile/";
@@ -21,6 +22,7 @@ class ProfileController extends GetxController {
     });
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
+      userId = jsonData['user'].toString();
       fullName = jsonData['full_name'];
       email = jsonData['get_email'];
       username = jsonData['get_username'];

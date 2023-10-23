@@ -155,7 +155,7 @@ class _LoginViewState extends State<LoginView> {
                 isPosting
                     ? const LoadingUi()
                     : RawMaterialButton(
-                        fillColor: buttonColor,
+                        fillColor: newButton,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
                         onPressed: () {

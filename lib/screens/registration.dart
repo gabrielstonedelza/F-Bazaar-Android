@@ -57,6 +57,17 @@ class _RegistrationState extends State<Registration> {
   bool emailError = false;
   bool usernameError = false;
   bool phoneNumberError = false;
+  bool agreedToBeSupplied = false;
+
+  void _onAgreementChanged(bool newValue) => setState(() {
+        agreedToBeSupplied = newValue;
+
+        if (agreedToBeSupplied) {
+          // TODO: Here goes your functionality that remembers the user.
+        } else {
+          // TODO: Forget the user
+        }
+      });
 
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -341,6 +352,17 @@ class _RegistrationState extends State<Registration> {
                       },
                     ),
                   ),
+                  CheckboxListTile(
+                    title: const Text("Agree to receive supplies"),
+                    value: agreedToBeSupplied,
+                    onChanged: (newValue) {
+                      setState(() {
+                        agreedToBeSupplied = newValue!;
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity
+                        .leading, //  <-- leading Checkbox
+                  ),
                   phoneNumberVerified
                       ? Column(
                           children: [
@@ -470,14 +492,15 @@ class _RegistrationState extends State<Registration> {
                                         _emailController.text.trim(),
                                         _phoneNumberController.text.trim(),
                                         _passwordController.text.trim(),
-                                        _rePasswordController.text.trim());
+                                        _rePasswordController.text.trim(),
+                                        agreedToBeSupplied);
                                   }
                                 }
                               },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8)),
                               elevation: 8,
-                              fillColor: buttonColor,
+                              fillColor: newButton,
                               splashColor: primaryYellow,
                               child: const Text(
                                 "Register",

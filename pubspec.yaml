@@ -58,6 +58,14 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   pinput: ^3.0.1
   carousel_slider: ^4.2.1
+  font_awesome_flutter:
+  flutter_rating_bar:
+  google_maps_flutter:
+  location: ^5.0.3
+  geolocator: ^10.1.0
+  geocoding: ^2.1.1
+  flutter_local_notifications:
+
 
 dev_dependencies:
   flutter_test:

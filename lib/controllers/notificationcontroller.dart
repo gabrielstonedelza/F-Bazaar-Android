@@ -27,11 +27,16 @@ class NotificationController extends GetxController {
       triggeredNotifications = json.decode(jsonData);
       triggered.assignAll(triggeredNotifications);
       update();
+    } else {
+      if (kDebugMode) {
+        print(response.body);
+      }
     }
   }
 
   Future<void> getAllUnReadNotifications(String token) async {
-    const url = "https://f-bazaar.com/notifications/get_user_notifications/";
+    const url =
+        "https://f-bazaar.com/notifications/get_my_unread_notifications/";
     var myLink = Uri.parse(url);
     final response =
         await http.get(myLink, headers: {"Authorization": "Token $token"});
@@ -49,8 +54,7 @@ class NotificationController extends GetxController {
   }
 
   Future<void> getAllNotifications(String token) async {
-    const url =
-        "https://f-bazaar.com/notifications/get_all_user_notifications/";
+    const url = "https://f-bazaar.com/notifications/my_notifications/";
     var myLink = Uri.parse(url);
     final response =
         await http.get(myLink, headers: {"Authorization": "Token $token"});
@@ -59,6 +63,7 @@ class NotificationController extends GetxController {
       var jsonData = const Utf8Decoder().convert(codeUnits);
       allNotifications = json.decode(jsonData);
       allNots.assignAll(allNotifications);
+      // print(response.body);
       update();
     } else {
       if (kDebugMode) {
@@ -67,9 +72,9 @@ class NotificationController extends GetxController {
     }
   }
 
-  Future<void> unTriggerNotifications(int id, String token) async {
+  unTriggerNotifications(int id, String token) async {
     final requestUrl =
-        "https://f-bazaar.com/notifications/read_notification/$id/";
+        "https://f-bazaar.com/notifications/un_trigger_notification/$id/";
     final myLink = Uri.parse(requestUrl);
     final response = await http.put(myLink, headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -77,10 +82,22 @@ class NotificationController extends GetxController {
       "Authorization": "Token $token"
     }, body: {
       "notification_trigger": "Not Triggered",
+      "read": "Read",
     });
+    if (response.statusCode == 200) {}
+  }
+
+  Future<void> updateReadNotification(String token) async {
+    const requestUrl = "https://f-bazaar.com/notifications/read_notification/";
+    final myLink = Uri.parse(requestUrl);
+    final response = await http.put(myLink, headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      'Accept': 'application/json',
+      "Authorization": "Token $token"
+    }, body: {});
     if (response.statusCode == 200) {
-      isLoading = false;
-      update();
+    } else {
+      print(response.body);
     }
   }
 }

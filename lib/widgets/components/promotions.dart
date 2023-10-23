@@ -1,5 +1,6 @@
 import 'package:fbazaar/controllers/storeitemscontroller.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/cartcontroller.dart';
@@ -34,76 +35,96 @@ class _PromotionsState extends State<Promotions> {
             itemBuilder: (context, index) {
               items = controller.promotionItems[index];
               return InkWell(
-                onTap: () {
-                  Get.to(() => DetailPage(
-                      id: controller.promotionItems[index]['id'].toString()));
-                },
-                child: Card(
-                  // elevation: 10,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 200,
-                          width: 250,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(items['get_item_pic']))),
+                  onTap: () {
+                    Get.to(() => DetailPage(
+                        id: controller.promotionItems[index]['id'].toString()));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //   item image
+                            Expanded(
+                              flex: 2,
+                              child: Center(
+                                child: Image.network(items['get_item_pic'],
+                                    width: 200, height: 200),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 5.0, top: 18),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      items['name'],
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(items['size'],
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13,
+                                            color: muted)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Text("₵ ${items['new_price']}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17,
+                                          color: primaryYellow)),
+                                  const SizedBox(width: 90),
+                                  GetBuilder<CartController>(
+                                      builder: (cartController) {
+                                    return InkWell(
+                                      onTap: () {
+                                        cartController.addToCart(
+                                            token,
+                                            storeItemsController
+                                                .promotionItems[index]['id']
+                                                .toString(),
+                                            "1",
+                                            storeItemsController
+                                                .promotionItems[index]
+                                                    ['new_price']
+                                                .toString());
+                                      },
+                                      child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          child: Container(
+                                              decoration: const BoxDecoration(
+                                                  color: newButton),
+                                              child: const Padding(
+                                                padding: EdgeInsets.all(5.0),
+                                                child: Icon(
+                                                    FontAwesomeIcons.add,
+                                                    color: defaultTextColor1),
+                                              ))),
+                                    );
+                                  })
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0, top: 10),
-                        child: Text(items['name'],
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18)),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Card(
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("₵ ${items['new_price'].toString()}",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20)),
-                            ),
-                          ),
-                          const SizedBox(width: 70),
-                          Card(
-                            elevation: 10,
-                            color: newButton,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: GetBuilder<CartController>(
-                                builder: (controller) {
-                              return IconButton(
-                                onPressed: () {
-                                  controller.addToCart(
-                                      token,
-                                      storeItemsController.exclusiveItems[index]
-                                              ['id']
-                                          .toString(),
-                                      "1",
-                                      storeItemsController.exclusiveItems[index]
-                                          ['new_price']);
-                                },
-                                icon: const Icon(Icons.add,
-                                    color: defaultTextColor1, size: 30),
-                              );
-                            }),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              );
+                    ),
+                  ));
             });
       }),
     );

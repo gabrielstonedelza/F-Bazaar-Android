@@ -1,10 +1,9 @@
 import 'package:fbazaar/controllers/cartcontroller.dart';
-import 'package:fbazaar/controllers/favoritescontroller.dart';
 import 'package:fbazaar/screens/pages/cart.dart';
 import 'package:fbazaar/screens/pages/explore.dart';
-import 'package:fbazaar/screens/pages/favorites.dart';
 import 'package:fbazaar/screens/pages/mainhome.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:fbazaar/screens/pages/orders.dart';
 import 'package:fbazaar/screens/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -24,8 +23,8 @@ class _HomePageState extends State<HomePage> {
   static const List<Widget> _widgetOptions = <Widget>[
     MainHome(),
     Explore(),
+    Orders(),
     MyCart(),
-    Favorites(),
     Profile()
   ];
 
@@ -59,13 +58,20 @@ class _HomePageState extends State<HomePage> {
             selectedColor: primaryYellow,
           ),
 
-          /// Explore
+          // Explore
           SalomonBottomBarItem(
             icon: const Icon(Icons.manage_search),
             title: const Text("Explore"),
             activeIcon: const Icon(Icons.manage_search_outlined),
             selectedColor: primaryYellow,
           ),
+
+          // order
+          SalomonBottomBarItem(
+              icon: const Icon(Icons.shopping_bag_rounded),
+              title: const Text("Order"),
+              selectedColor: primaryYellow,
+              activeIcon: const Icon(Icons.shopping_bag_outlined)),
 
           /// cart
           SalomonBottomBarItem(
@@ -90,29 +96,6 @@ class _HomePageState extends State<HomePage> {
             activeIcon: const Icon(Icons.shopping_cart_outlined),
             selectedColor: primaryYellow,
           ),
-
-          /// Favorites
-          SalomonBottomBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: badges.Badge(
-                    badgeContent:
-                        GetBuilder<FavoritesController>(builder: (rController) {
-                      return Text("${rController.allMyFavorites.length}",
-                          style: const TextStyle(color: Colors.white));
-                    }),
-                    badgeAnimation: const badges.BadgeAnimation.rotation(
-                      animationDuration: Duration(seconds: 1),
-                      colorChangeAnimationDuration: Duration(seconds: 1),
-                      loopAnimation: false,
-                      curve: Curves.fastOutSlowIn,
-                      colorChangeAnimationCurve: Curves.easeInCubic,
-                    ),
-                    child: const Icon(Icons.favorite)),
-              ),
-              title: const Text("Favorites"),
-              selectedColor: primaryYellow,
-              activeIcon: const Icon(Icons.favorite_border_outlined)),
 
           /// Profile
           SalomonBottomBarItem(

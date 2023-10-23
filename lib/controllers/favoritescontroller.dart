@@ -37,7 +37,7 @@ class FavoritesController extends GetxController {
         // print(res.body);
       }
     } catch (e) {
-      Get.snackbar("Sorry", "please check your internet connection");
+      // Get.snackbar("Sorry", "please check your internet connection");
     } finally {
       isLoading = false;
       update();

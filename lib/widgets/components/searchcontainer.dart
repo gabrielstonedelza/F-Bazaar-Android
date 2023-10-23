@@ -1,6 +1,7 @@
 import 'package:fbazaar/screens/pages/favorites.dart';
 import 'package:flutter/material.dart';
 
+import '../../screens/pages/explore.dart';
 import '../../statics/appcolors.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +16,7 @@ class SearchComponent extends StatelessWidget {
         cursorColor: defaultTextColor2,
         readOnly: true,
         onTap: () {
-          Get.to(() => const Favorites());
+          Get.to(() => const Explore());
         },
         decoration: InputDecoration(
             labelText: "Search Store",

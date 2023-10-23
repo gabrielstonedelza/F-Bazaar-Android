@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 import '../../screens/homepage.dart';
 import '../../statics/appcolors.dart';
+import '../screens/loginview.dart';
 
 class LoginController extends GetxController {
   final client = http.Client();
@@ -81,6 +82,26 @@ class LoginController extends GetxController {
           backgroundColor: warning,
           colorText: defaultTextColor1);
       storage.remove("token");
+    }
+  }
+
+  Future<void> logoutUser(String token) async {
+    storage.remove("token");
+    Get.offAll(() => const LoginView());
+    const logoutUrl = "https://f-bazaar.com/auth/token/logout";
+    final myLink = Uri.parse(logoutUrl);
+    http.Response response = await http.post(myLink, headers: {
+      'Accept': 'application/json',
+      "Authorization": "Token $token"
+    });
+
+    if (response.statusCode == 200) {
+      Get.snackbar("Success", "You were logged out",
+          colorText: defaultTextColor1,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: primaryYellow);
+      storage.remove("token");
+      Get.offAll(() => const LoginView());
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:fbazaar/controllers/favoritescontroller.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,8 @@ import '../../controllers/cartcontroller.dart';
 import '../../controllers/storeitemscontroller.dart';
 import '../../statics/appcolors.dart';
 import 'package:http/http.dart' as http;
+
+import '../../widgets/components/item_detail_remarks.dart';
 
 class DetailPage extends StatefulWidget {
   final id;
@@ -58,16 +61,6 @@ class _DetailPageState extends State<DetailPage> {
     });
   }
 
-  void _addToFavorites() async {
-    setState(() {
-      isAddingToFavorites = true;
-    });
-    await Future.delayed(const Duration(seconds: 5));
-    setState(() {
-      isAddingToFavorites = false;
-    });
-  }
-
   void _addToRemarks() async {
     setState(() {
       isAddingToRemarks = true;
@@ -95,6 +88,7 @@ class _DetailPageState extends State<DetailPage> {
       wholesalePrice = jsonData['wholesale_price'];
       itemPic = jsonData['get_item_pic'];
       description = jsonData['description'];
+
       setState(() {
         isLoading = false;
         itemPrice = double.parse(newPrice);
@@ -126,25 +120,7 @@ class _DetailPageState extends State<DetailPage> {
     }
   }
 
-  Future<void> getItemRatings() async {
-    final profileLink = "https://f-bazaar.com/store_api/item/$id/ratings/";
-    var link = Uri.parse(profileLink);
-    http.Response response = await http.get(link, headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Authorization": "Token $uToken"
-    });
-    if (response.statusCode == 200) {
-      var jsonData = jsonDecode(response.body);
-      customersRatings = jsonData;
-      setState(() {
-        isLoading = false;
-      });
-    } else {
-      if (kDebugMode) {
-        print(response.body);
-      }
-    }
-  }
+  late Timer _timer;
 
   @override
   void initState() {
@@ -153,7 +129,8 @@ class _DetailPageState extends State<DetailPage> {
     }
     getItem();
     getItemRemarks();
-    getItemRatings();
+
+    storeItemsController.getItemRemarks(uToken, id);
     _reviewController = TextEditingController();
     super.initState();
   }
@@ -182,6 +159,7 @@ class _DetailPageState extends State<DetailPage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        maxLength: 100,
                         focusNode: _reviewFocusNode,
                         cursorColor: defaultTextColor2,
                         controller: _reviewController,
@@ -220,7 +198,11 @@ class _DetailPageState extends State<DetailPage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12)),
                               onPressed: () {
+                                setState(() {
+                                  isLoading = true;
+                                });
                                 _addToRemarks();
+                                getItem();
                                 FocusScopeNode currentFocus =
                                     FocusScope.of(context);
 
@@ -282,10 +264,18 @@ class _DetailPageState extends State<DetailPage> {
                   centerTitle: false,
                   expandedHeight: 300,
                   flexibleSpace: SafeArea(
-                    child: FlexibleSpaceBar(
-                      background: Image(
-                        image: NetworkImage(itemPic),
-                        fit: BoxFit.cover,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FlexibleSpaceBar(
+                        background: itemPic == ""
+                            ? const Image(
+                                image: AssetImage("assets/images/fbazaar.png"),
+                                fit: BoxFit.fitHeight,
+                              )
+                            : Image(
+                                image: NetworkImage(itemPic),
+                                fit: BoxFit.fitHeight,
+                              ),
                       ),
                     ),
                   ),
@@ -301,27 +291,13 @@ class _DetailPageState extends State<DetailPage> {
                         Text(name,
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20)),
-                        isAddingToFavorites
-                            ? const LoadingUi()
-                            : GetBuilder<FavoritesController>(
-                                builder: (controller) {
-                                return IconButton(
-                                    onPressed: () {
-                                      _addToFavorites();
-                                      controller.addToFavorites(uToken, id);
-                                    },
-                                    icon: controller.favoriteIds.contains(id)
-                                        ? const Icon(Icons.favorite,
-                                            color: warning)
-                                        : const Icon(
-                                            Icons.favorite_border_outlined));
-                              })
                       ],
                     ),
                   ),
                   // increase and decrease item quantity and price
                   Padding(
-                    padding: const EdgeInsets.all(18.0),
+                    padding: const EdgeInsets.only(
+                        left: 18.0, right: 18, top: 10, bottom: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -384,12 +360,12 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   //       divider
                   const Padding(
-                    padding: EdgeInsets.all(18.0),
+                    padding: EdgeInsets.only(top: 5.0, left: 10, right: 10),
                     child: Divider(height: 5, color: newShadow),
                   ),
                   // item description
                   Padding(
-                    padding: const EdgeInsets.all(18.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -424,17 +400,29 @@ class _DetailPageState extends State<DetailPage> {
                       ],
                     ),
                   ),
-                  //       divider
-                  const Padding(
-                    padding: EdgeInsets.all(18.0),
-                    child: Divider(height: 5, color: newShadow),
+                  Padding(
+                      padding: const EdgeInsets.only(
+                          left: 10.0, top: 10, bottom: 10.0),
+                      child: Row(
+                        children: [
+                          Text("Reviews (${customersRemarks.length})",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: defaultTextColor2)),
+                        ],
+                      )),
+                  SizedBox(
+                    height: 150,
+                    child: ItemDetailRemarks(token: uToken, id: id),
                   ),
                   //       add to cart button
                   isAddingToCart
                       ? const LoadingUi()
                       : GetBuilder<CartController>(builder: (controller) {
                           return Padding(
-                            padding: const EdgeInsets.all(18.0),
+                            padding: const EdgeInsets.only(
+                                left: 18.0, right: 18, top: 10, bottom: 10),
                             child: RawMaterialButton(
                               fillColor: newButton,
                               shape: RoundedRectangleBorder(
@@ -458,66 +446,8 @@ class _DetailPageState extends State<DetailPage> {
                             ),
                           );
                         }),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 18.0, top: 18, bottom: 18.0),
-                    child:
-                        GetBuilder<StoreItemsController>(builder: (controller) {
-                      return Text(
-                          "Customer Reviews (${controller.customersRemarks.length})",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: defaultTextColor2));
-                    }),
-                  ),
-                  SizedBox(
-                    height: 100,
-                    child:
-                        GetBuilder<StoreItemsController>(builder: (controller) {
-                      return ListView.builder(
-                          itemCount: controller.customersRemarks != null
-                              ? controller.customersRemarks.length
-                              : 0,
-                          itemBuilder: (context, index) {
-                            customersReviews =
-                                controller.customersRemarks[index];
-                            return Card(
-                              elevation: 10,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: ListTile(
-                                title: Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(customersReviews['get_username'],
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold)),
-                                      Text(customersReviews['date_added']
-                                          .toString()
-                                          .split("T")
-                                          .first),
-                                    ],
-                                  ),
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 8.0),
-                                      child: Text(customersReviews['remark']),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          });
-                    }),
-                  ),
+
+                  const SizedBox(height: 20)
                 ]))
               ],
             ),
