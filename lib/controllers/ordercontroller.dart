@@ -15,6 +15,7 @@ class OrderController extends GetxController {
   late List deliveredOrders = [];
   late List processingOrders = [];
   late List pickedUpOrders = [];
+  int responseStatus = 0;
 
   Future<void> getAllMyOrders(String token) async {
     const profileLink = "https://f-bazaar.com/order/my_orders/";
@@ -143,15 +144,16 @@ class OrderController extends GetxController {
       "unique_order_code": unCode,
     });
     if (response.statusCode == 201) {
-      Get.snackbar("Hurray 😀", "your order was successful.",
-          colorText: defaultTextColor1,
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: newDefault,
-          duration: const Duration(seconds: 5));
-
+      responseStatus = response.statusCode;
+      // Get.snackbar("Hurray 😀", "your order was successful.",
+      //     colorText: defaultTextColor1,
+      //     snackPosition: SnackPosition.TOP,
+      //     backgroundColor: newDefault,
+      //     duration: const Duration(seconds: 5));
       update();
       Get.offAll(() => const HomePage());
     } else {
+      responseStatus = response.statusCode;
       Get.snackbar(
         "Order Error",
         "Something went wrong",

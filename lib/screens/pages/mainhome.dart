@@ -192,117 +192,119 @@ class _MainHomeState extends State<MainHome> {
     }
 
     return Scaffold(
-      body: ListView(
-        children: [
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: Row(
-              children: [
-                const Expanded(flex: 2, child: SearchComponent()),
-                GestureDetector(
-                  onTap: () {
-                    Get.to(() => const Notifications());
-                  },
-                  child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: badges.Badge(
-                        badgeContent: GetBuilder<NotificationController>(
-                            builder: (rController) {
-                          return Text("${rController.notRead.length}",
-                              style: const TextStyle(color: Colors.white));
-                        }),
-                        badgeAnimation: const badges.BadgeAnimation.rotation(
-                          animationDuration: Duration(seconds: 1),
-                          colorChangeAnimationDuration: Duration(seconds: 1),
-                          loopAnimation: false,
-                          curve: Curves.fastOutSlowIn,
-                          colorChangeAnimationCurve: Curves.easeInCubic,
-                        ),
-                        child: const Icon(FontAwesomeIcons.bell, size: 30),
-                      )),
-                )
-              ],
+      body: SafeArea(
+        child: ListView(
+          children: [
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Row(
+                children: [
+                  const Expanded(flex: 2, child: SearchComponent()),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => const Notifications());
+                    },
+                    child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: badges.Badge(
+                          badgeContent: GetBuilder<NotificationController>(
+                              builder: (rController) {
+                            return Text("${rController.notRead.length}",
+                                style: const TextStyle(color: Colors.white));
+                          }),
+                          badgeAnimation: const badges.BadgeAnimation.rotation(
+                            animationDuration: Duration(seconds: 1),
+                            colorChangeAnimationDuration: Duration(seconds: 1),
+                            loopAnimation: false,
+                            curve: Curves.fastOutSlowIn,
+                            colorChangeAnimationCurve: Curves.easeInCubic,
+                          ),
+                          child: const Icon(FontAwesomeIcons.bell, size: 30),
+                        )),
+                  )
+                ],
+              ),
             ),
-          ),
-          // carousel
-          myCarouselOne(),
-          const SizedBox(height: 10),
-          const Divider(
-            color: Colors.blueGrey,
-          ),
+            // carousel
+            myCarouselOne(),
+            const SizedBox(height: 10),
+            const Divider(
+              color: Colors.blueGrey,
+            ),
 
-          Padding(
-            padding: const EdgeInsets.only(top: 18.0, bottom: 8.0, left: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text("Exclusive Offer",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                TextButton(
-                  onPressed: () {
-                    Get.to(() => const AllExclusives());
-                  },
-                  child: const Text("See All",
-                      style: TextStyle(color: newSecondary)),
-                )
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 18.0, bottom: 8.0, left: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Exclusive Offer",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  TextButton(
+                    onPressed: () {
+                      Get.to(() => const AllExclusives());
+                    },
+                    child: const Text("See All",
+                        style: TextStyle(color: newSecondary)),
+                  )
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            height: 300,
-            child: Exclusives(
-              token: uToken,
+            SizedBox(
+              height: 300,
+              child: Exclusives(
+                token: uToken,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 18.0, bottom: 8.0, left: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text("Promotion",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                TextButton(
-                  onPressed: () {
-                    Get.to(() => const AllPromotions());
-                  },
-                  child: const Text("See All",
-                      style: TextStyle(color: newSecondary)),
-                )
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 18.0, bottom: 8.0, left: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Promotion",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  TextButton(
+                    onPressed: () {
+                      Get.to(() => const AllPromotions());
+                    },
+                    child: const Text("See All",
+                        style: TextStyle(color: newSecondary)),
+                  )
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            height: 300,
-            child: Promotions(
-              token: uToken,
+            SizedBox(
+              height: 300,
+              child: Promotions(
+                token: uToken,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 18.0, bottom: 8.0, left: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text("Recent Products",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                TextButton(
-                  onPressed: () {
-                    Get.to(() => const AllOthers());
-                  },
-                  child: const Text("See All",
-                      style: TextStyle(color: newSecondary)),
-                )
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 18.0, bottom: 8.0, left: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Recent Products",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  TextButton(
+                    onPressed: () {
+                      Get.to(() => const AllOthers());
+                    },
+                    child: const Text("See All",
+                        style: TextStyle(color: newSecondary)),
+                  )
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            height: 300,
-            child: Products(token: uToken),
-          )
-        ],
+            SizedBox(
+              height: 300,
+              child: Products(token: uToken),
+            )
+          ],
+        ),
       ),
     );
   }

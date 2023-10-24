@@ -384,18 +384,20 @@ class _NewCheckOutState extends State<NewCheckOut> {
                                   isDelivery ? defaultTextColor2 : muted[100],
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
-                              child: const Padding(
+                              child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Row(
                                   children: [
-                                    Icon(Icons.delivery_dining_rounded,
+                                    const Icon(Icons.delivery_dining_rounded,
                                         color: newButton, size: 30),
-                                    SizedBox(width: 30),
+                                    const SizedBox(width: 30),
                                     Text("Delivery",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
-                                            color: newButton)),
+                                            color: isDelivery
+                                                ? defaultTextColor1
+                                                : newButton)),
                                   ],
                                 ),
                               ),
@@ -413,18 +415,20 @@ class _NewCheckOutState extends State<NewCheckOut> {
                               color: isPickup ? defaultTextColor2 : muted[100],
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   children: [
-                                    Icon(FontAwesomeIcons.store,
+                                    const Icon(FontAwesomeIcons.store,
                                         color: newButton, size: 30),
-                                    SizedBox(width: 30),
+                                    const SizedBox(width: 30),
                                     Text("Pick Up",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
-                                            color: newButton))
+                                            color: isPickup
+                                                ? defaultTextColor1
+                                                : newButton))
                                   ],
                                 ),
                               ),
@@ -501,6 +505,12 @@ class _NewCheckOutState extends State<NewCheckOut> {
                                     borderRadius: BorderRadius.circular(12)),
                                 onPressed: () {
                                   _startPosting();
+                                  Get.snackbar("Hurray 😀",
+                                      "your order is being sent for processing,please wait.",
+                                      colorText: defaultTextColor1,
+                                      snackPosition: SnackPosition.TOP,
+                                      backgroundColor: newDefault,
+                                      duration: const Duration(seconds: 5));
                                   if (deliveryMethod == "") {
                                     Get.snackbar(
                                       "Delivery Error",
@@ -532,6 +542,10 @@ class _NewCheckOutState extends State<NewCheckOut> {
                                     return;
                                   } else {
                                     for (var c in cartController.cartItems) {
+                                      setState(() {
+                                        isPosting = true;
+                                      });
+
                                       orderController.placeOrder(
                                           uToken,
                                           c['id'].toString(),
@@ -544,6 +558,18 @@ class _NewCheckOutState extends State<NewCheckOut> {
                                           dropOffLng.toString(),
                                           deliveryMethod,
                                           itemUniqueCode);
+                                      // orderController.placeOrder(
+                                      //     uToken,
+                                      //     c['id'].toString(),
+                                      //     c['quantity'].toString(),
+                                      //     c['get_item_price'].toString(),
+                                      //     c['get_item_category'],
+                                      //     c['get_item_size'].toString(),
+                                      //     _currentSelectedPaymentMethod,
+                                      //     dropOffLat.toString(),
+                                      //     dropOffLng.toString(),
+                                      //     deliveryMethod,
+                                      //     itemUniqueCode);
                                     }
                                   }
                                 },

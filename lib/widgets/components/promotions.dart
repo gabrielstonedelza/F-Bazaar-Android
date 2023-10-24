@@ -81,12 +81,20 @@ class _PromotionsState extends State<Promotions> {
                             Expanded(
                               child: Row(
                                 children: [
+                                  Text("₵ ${items['old_price']}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                          color: muted,
+                                          decoration:
+                                              TextDecoration.lineThrough)),
+                                  const SizedBox(width: 20),
                                   Text("₵ ${items['new_price']}",
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 17,
                                           color: primaryYellow)),
-                                  const SizedBox(width: 90),
+                                  const SizedBox(width: 20),
                                   GetBuilder<CartController>(
                                       builder: (cartController) {
                                     return InkWell(
